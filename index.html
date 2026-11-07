@@ -85,6 +85,7 @@
   .ov{position:absolute;inset:0;background:var(--card);display:flex;flex-direction:column;z-index:5}
   .ov h2{margin:0;font-size:16px;flex:1}
   .ovh{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line)}
+  .bk{background:var(--acc)!important;color:#fff!important;font-weight:700;font-size:15px;padding:8px 16px;width:auto;border-radius:20px;box-shadow:0 2px 6px rgba(0,0,0,.18);white-space:nowrap}
   .ovb{flex:1;overflow-y:auto;padding:12px 14px}
 
   .bar .stc{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
@@ -105,6 +106,34 @@
   .ares .ar:last-child{border-bottom:0}
   .ares .al{font-size:12px;color:var(--mute)}
   .ares .av{font-size:16px;font-weight:700;color:var(--blk)}
+  .cvrow{position:relative;display:flex;gap:3px;margin-bottom:10px}
+  .ovb button.cvc{display:flex;align-items:center;gap:14px;text-align:right;background:var(--key);padding:15px 16px;margin-bottom:10px;border-radius:14px;font-size:18px;font-weight:700}
+  .ovb .cvrow button.cvc{flex:1;flex-direction:column;justify-content:center;text-align:center;gap:6px;margin:0;padding:16px 8px;font-size:17px}
+  .ovb .cvrow button.cvc:first-child{border-radius:0 14px 14px 0}
+  .ovb .cvrow button.cvc:last-child{border-radius:14px 0 0 14px}
+  .cvj{position:absolute;top:50%;left:50%;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 4px var(--card);pointer-events:none;z-index:2}
+  .cvj:before{content:"";position:absolute;left:7px;top:7px;width:8px;height:8px;background:#fff;border-radius:50%}
+  .cvc small{display:block;color:var(--mute);font-size:12px;font-weight:400;margin-top:2px}
+  .ovb input.fxa{font-size:24px;font-weight:700;text-align:center;direction:ltr;margin-bottom:8px;padding:8px 12px}
+  .fxw{position:relative}
+  .ovb .fxw button.df{margin-bottom:6px;padding:9px 14px}
+  .fxw .df b{text-align:right;margin-inline-start:6px}
+  .ovb button.fxs{position:absolute;left:10px;top:50%;transform:translateY(-50%);z-index:2;display:flex;align-items:center;justify-content:center;margin:0;width:42px;height:42px;border-radius:50%;background:var(--acc);color:#fff;font-size:22px;padding:0;box-shadow:0 0 0 4px var(--card)}
+  .fxres{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0}
+  .fxres .big{font-size:24px;font-weight:700;color:var(--blk)}
+  .fxres .sm{font-size:13px;color:var(--mute);margin-top:4px}
+  .fxres .sm.ltr{direction:ltr;text-align:right}
+  .fxw2{margin-top:8px;padding:8px 10px;border-radius:10px;background:#fff4d6;color:#7a5200;font-size:13px;line-height:1.6}
+  .fxn{font-size:12px;color:var(--mute);line-height:1.6;margin:8px 2px}
+  .fxn a{color:var(--mute)}
+  .cpv{position:absolute;inset:0;z-index:30;background:var(--card);display:flex;flex-direction:column;direction:rtl}
+  .cph{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line)}
+  .cph input{flex:1;min-width:0;box-sizing:border-box;font:inherit;font-size:17px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--key);color:var(--ink);direction:rtl}
+  .cph button.bk{padding:10px 16px}
+  .cpl{flex:1;overflow-y:auto;padding:10px 12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;align-content:start}
+  .cpi{display:block;padding:7px 8px;border:1px solid var(--line);border-radius:10px;font-size:13px;cursor:pointer;line-height:1.35}
+  .cpi span{display:block;color:var(--mute);font-size:11px;direction:ltr;text-align:right}
+  .cpi.on{color:var(--acc);font-weight:700}
   .dpv{position:absolute;inset:0;z-index:30;background:rgba(0,0,0,.45);display:flex;align-items:flex-end}
   .dps{width:100%;background:var(--card);border-radius:20px 20px 0 0;padding:14px 14px 16px;direction:rtl}
   .dph{display:flex;align-items:center;gap:14px;margin-bottom:6px}
@@ -163,7 +192,7 @@
   <div class="tabs" id="tabs">
     <button class="tab" data-t="calc"><b>🧮 حاسبة</b><small>5×5</small></button>
     <button class="tab" data-t="write"><b>⌨️ كيبورد</b><small>قلم 3</small></button>
-    <button class="tab" data-t="age"><b>📅 العمر</b><small>وخدمة</small></button>
+    <button class="tab" data-t="age"><b>🔁 تحويل</b><small>عمر · عملات · خدمة</small></button>
   </div>
   <div class="keys" id="keys"></div>
   <div class="nbar" id="pWrite" style="display:none"><input id="note" type="text" placeholder="أكتب: قلم 3" autocomplete="off" enterkeyhint="done"><div class="md"><button type="button" id="mdD" class="on">تفصيل</button><button type="button" id="mdT">عنوان</button></div><button id="mic" type="button" aria-label="تحدّث">🎤</button></div>
@@ -350,9 +379,9 @@ function overlay(title){
   const ov=document.createElement('div');ov.className='ov';
   const h=document.createElement('div');h.className='ovh';
   const t=document.createElement('h2');t.textContent=title;
-  const c=document.createElement('button');c.textContent='إغلاق';c.style.cssText='font-size:14px;padding:7px 12px;width:auto';
+  const c=document.createElement('button');c.className='bk';c.textContent='→ رجوع';
   c.onclick=()=>ov.remove();
-  h.append(t,c);
+  h.append(c,t);
   const b=document.createElement('div');b.className='ovb';
   ov.append(h,b);calcEl.appendChild(ov);
   return {ov,b}
@@ -701,7 +730,7 @@ function setTab(t,noFocus){
   if(t==='write'&&!noFocus&&idx===lines.length-1&&typeof val(lines[idx])==='number'){lines.push('');idx++;render();queueSave()}
   if(t==='write'){if(!noFocus)setTimeout(()=>noteEl.focus(),50)}else noteEl.blur();
 }
-document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{if(b.dataset.t==='age')openAge();else setTab(b.dataset.t)});
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{if(b.dataset.t==='age')openConvert();else setTab(b.dataset.t)});
 
 let savedTab='calc';try{savedTab=localStorage.getItem('calc_tab')||'calc'}catch(e){}
 
@@ -872,9 +901,9 @@ function openPicker(init){
 }
 
 
-function openAge(){
+function openAge(m0){
   const {ov,b}=overlay('حساب العمر والخدمة');
-  let mode='age',bd=null,st=null,en=noon(new Date()),name='';
+  let mode=m0||'age',bd=null,st=null,en=noon(new Date()),name='';
   try{name=localStorage.getItem('calc_age_name')||''}catch(e){}
   const seg=document.createElement('div');seg.className='seg';
   const sA=document.createElement('button'),sS=document.createElement('button');
@@ -936,6 +965,147 @@ function openAge(){
   sA.onclick=()=>{mode='age';refresh()};sS.onclick=()=>{mode='svc';refresh()};
   b.append(seg,nm,fb,rb,send);
   refresh()
+}
+
+/* ---------- قائمة التحويل ---------- */
+function openConvert(){
+  const {b}=overlay('تحويل');
+  const card=(ic,t,sm,fn)=>{const x=document.createElement('button');x.className='cvc';const i=document.createElement('i');i.textContent=ic;const d=document.createElement('div');d.append(t);const s=document.createElement('small');s.textContent=sm;d.append(s);x.append(i,d);x.onclick=fn;return x};
+  const row=document.createElement('div');row.className='cvrow';
+  const j=document.createElement('div');j.className='cvj';
+  row.append(card('🎂','حساب العمر','هجري وميلادي',()=>openAge('age')),card('💼','حساب الخدمة','من تاريخ إلى تاريخ',()=>openAge('svc')),j);
+  b.append(row,card('💱','تحويل العملات','أسعار الصرف المحدّثة',()=>openCur()))
+}
+
+/* ---------- تحويل العملات ---------- */
+const CUR=[['SAR','ريال سعودي'],['USD','دولار أمريكي'],['EUR','يورو'],['GBP','جنيه إسترليني'],['AED','درهم إماراتي'],['KWD','دينار كويتي'],['QAR','ريال قطري'],['BHD','دينار بحريني'],['OMR','ريال عماني'],['EGP','جنيه مصري'],['JOD','دينار أردني'],['IQD','دينار عراقي'],['LBP','ليرة لبنانية'],['SYP','ليرة سورية'],['YER','ريال يمني'],['SDG','جنيه سوداني'],['LYD','دينار ليبي'],['TND','دينار تونسي'],['DZD','دينار جزائري'],['MAD','درهم مغربي'],['TRY','ليرة تركية'],['PKR','روبية باكستانية'],['INR','روبية هندية'],['BDT','تاكا بنغلاديشية'],['LKR','روبية سريلانكية'],['NPR','روبية نيبالية'],['PHP','بيزو فلبيني'],['IDR','روبية إندونيسية'],['MYR','رينغيت ماليزي'],['SGD','دولار سنغافوري'],['THB','بات تايلندي'],['VND','دونغ فيتنامي'],['CNY','يوان صيني'],['JPY','ين ياباني'],['KRW','وون كوري'],['HKD','دولار هونغ كونغ'],['CHF','فرنك سويسري'],['CAD','دولار كندي'],['AUD','دولار أسترالي'],['NZD','دولار نيوزيلندي'],['SEK','كرونة سويدية'],['NOK','كرونة نرويجية'],['DKK','كرونة دنماركية'],['PLN','زلوتي بولندي'],['CZK','كرونة تشيكية'],['RUB','روبل روسي'],['UAH','هريفنا أوكرانية'],['BRL','ريال برازيلي'],['MXN','بيزو مكسيكي'],['ARS','بيزو أرجنتيني'],['ZAR','راند جنوب أفريقي'],['ETB','بر إثيوبي'],['KES','شلن كيني'],['NGN','نايرا نيجيرية'],['GHS','سيدي غاني']];
+const CURN={};CUR.forEach(c=>{CURN[c[0]]=c[1]});
+async function fetchFx(){
+  try{const r=await fetch('https://open.er-api.com/v6/latest/USD');const j=await r.json();if(j&&j.result==='success'&&j.rates)return {r:j.rates,u:(j.time_last_update_unix||0)*1000,s:'er'}}catch(e){}
+  for(const url of ['https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.min.json','https://latest.currency-api.pages.dev/v1/currencies/usd.min.json']){
+    try{const r=await fetch(url);const j=await r.json();if(j&&j.usd){const o={};for(const k in j.usd)o[k.toUpperCase()]=j.usd[k];return {r:o,u:new Date(j.date+'T00:00:00Z').getTime(),s:'fa'}}}catch(e){}
+  }
+  return null
+}
+async function getFx(force){
+  let c=null;try{c=JSON.parse(localStorage.getItem('calc_fx')||'null')}catch(e){}
+  if(!force&&c&&c.r&&Date.now()-c.t<3600e3)return c;
+  const n=await fetchFx();
+  if(n){n.t=Date.now();try{localStorage.setItem('calc_fx',JSON.stringify(n))}catch(e){}return n}
+  return c&&c.r?Object.assign({},c,{stale:true}):null
+}
+function fxNum(v){
+  if(!isFinite(v))return '—';
+  const a=Math.abs(v);
+  if(a>=1)return v.toLocaleString('en',{maximumFractionDigits:2,minimumFractionDigits:2});
+  if(a===0)return '0';
+  return v.toLocaleString('en',{maximumSignificantDigits:4})
+}
+function fxRate(v){
+  const a=Math.abs(v);
+  return v.toLocaleString('en',a>=100?{maximumFractionDigits:2}:a>=1?{maximumFractionDigits:4}:{maximumSignificantDigits:5})
+}
+function fxAgo(ms){
+  const m=Math.max(0,Math.round((Date.now()-ms)/6e4));
+  if(m<2)return 'الآن';
+  if(m<60)return 'قبل '+m+' دقيقة';
+  const h=Math.round(m/60);if(h<24)return 'قبل '+(h===1?'ساعة':h===2?'ساعتين':h<=10?h+' ساعات':h+' ساعة');
+  const d=Math.round(h/24);return 'قبل '+(d===1?'يوم':d===2?'يومين':d<=10?d+' أيام':d+' يومًا')
+}
+function fxTime(ms){
+  const d=new Date(ms);
+  return fG(d)+' - '+d.toLocaleTimeString('ar-SA-u-nu-latn',{hour:'numeric',minute:'2-digit'})
+}
+const arN=t=>t.toLowerCase().replace(/[ً-ٰٟـ]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه');
+function openCurPick(cur,list,done){
+  const ov=document.createElement('div');ov.className='cpv';
+  const close=v=>{ov.remove();if(v)done(v)};
+  const h=document.createElement('div');h.className='cph';
+  const q=document.createElement('input');q.type='text';q.placeholder='اكتب حرفًا أو اسم العملة';q.autocomplete='off';q.setAttribute('enterkeyhint','search');
+  const x=document.createElement('button');x.className='bk';x.textContent='→ رجوع';x.onclick=()=>close(null);
+  h.append(x,q);
+  const L=document.createElement('div');L.className='cpl';
+  const draw=()=>{
+    const t=arN(q.value.trim());L.innerHTML='';
+    list.filter(c=>{
+      if(!t)return true;
+      const nm=arN(c[1]);
+      return nm.split(' ').some(w=>w.startsWith(t))||c[0].toLowerCase().startsWith(t)||(t.length>=3&&nm.includes(t))
+    }).forEach(c=>{
+      const r=document.createElement('div');r.className='cpi'+(c[0]===cur?' on':'');
+      const n=document.createElement('div');n.textContent=c[1];const k=document.createElement('span');k.textContent=c[0];
+      r.append(n,k);r.onclick=()=>close(c[0]);L.append(r)
+    });
+    if(!L.children.length){const e=document.createElement('div');e.className='note';e.style.cssText='padding:16px 4px;grid-column:1/-1';e.textContent='لا توجد نتيجة';L.append(e)}
+  };
+  q.oninput=draw;
+  q.onkeydown=e=>{if(e.key==='Enter'){const f=L.querySelector('.cpi');if(f)f.click()}};
+  ov.append(h,L);calcEl.appendChild(ov);draw();
+  q.focus();q.select()
+}
+function openCur(){
+  const {b}=overlay('تحويل العملات');
+  let from='SAR',to='USD',amt='1',fx=null,busy=false,fail=false;
+  try{from=localStorage.getItem('calc_fx_from')||from;to=localStorage.getItem('calc_fx_to')||to;amt=localStorage.getItem('calc_fx_amt')||amt}catch(e){}
+  const save=()=>{try{localStorage.setItem('calc_fx_from',from);localStorage.setItem('calc_fx_to',to);localStorage.setItem('calc_fx_amt',amt)}catch(e){}};
+  const lb=t=>{const d=document.createElement('div');d.className='fxlb';d.textContent=t;return d};
+  const inp=document.createElement('input');inp.className='nm fxa';inp.type='text';inp.inputMode='decimal';inp.autocomplete='off';inp.value=amt;
+  const selAll=()=>{try{inp.select();inp.setSelectionRange(0,inp.value.length)}catch(e){}};
+  inp.onfocus=()=>{selAll();setTimeout(selAll,30)};
+  inp.onpointerup=()=>setTimeout(selAll,0);
+  inp.onclick=()=>setTimeout(selAll,0);
+  inp.oninput=()=>{
+    let v=inp.value.replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٫,،]/g,'.').replace(/[^0-9.]/g,'');
+    const i=v.indexOf('.');if(i>=0)v=v.slice(0,i+1)+v.slice(i+1).replace(/\./g,'');
+    if(v!==inp.value)inp.value=v;amt=v;save();render()
+  };
+  const fb=document.createElement('div'),swap=document.createElement('button'),tb=document.createElement('div'),rb=document.createElement('div');
+  swap.className='fxs';swap.textContent='⇅';swap.setAttribute('aria-label','تبديل');
+  swap.onclick=()=>{const t=from;from=to;to=t;save();render()};
+  const list=()=>fx?CUR.filter(c=>fx.r[c[0]]):CUR;
+  const field=(label,get,set)=>{
+    const f=document.createElement('button');f.className='df';
+    const l=document.createElement('span');l.textContent=label;
+    const v=document.createElement('b');v.textContent=(CURN[get()]||get())+'  ('+get()+')';
+    f.append(l,v);
+    f.onclick=()=>openCurPick(get(),list(),x=>{set(x);save();render()});
+    return f
+  };
+  function render(){
+    fb.innerHTML='';tb.innerHTML='';rb.innerHTML='';
+    fb.append(field('من',()=>from,x=>{from=x}));
+    tb.append(field('إلى',()=>to,x=>{to=x}));
+    if(!fx){
+      const p=document.createElement('p');p.className='note';
+      p.textContent=busy?'جارٍ جلب الأسعار...':fail?'تعذّر جلب الأسعار. تأكد من الإنترنت ثم اضغط «تحديث الأسعار».':'';
+      rb.append(p);return
+    }
+    const rf=fx.r[from],rt=fx.r[to];
+    if(!rf||!rt){const p=document.createElement('p');p.className='note';p.textContent='هذه العملة غير متوفرة حاليًا.';rb.append(p);return}
+    const rate=rt/rf,n=parseFloat(amt);
+    const c=document.createElement('div');c.className='fxres';
+    const ln=(t,cls)=>{const d=document.createElement('div');d.className=cls;d.textContent=t;c.append(d)};
+    ln(isFinite(n)?fxNum(n*rate)+' '+(CURN[to]||to):'أدخل المبلغ','big');
+    ln('1 '+from+' = '+fxRate(rate)+' '+to+'   |   1 '+to+' = '+fxRate(1/rate)+' '+from,'sm ltr');
+    ln((fx.s==='er'?'آخر تحديث للأسعار: '+fxTime(fx.u):'تاريخ الأسعار: '+fG(new Date(fx.u))),'sm');
+    if(fx.stale){const w=document.createElement('div');w.className='fxw2';w.textContent='⚠ لا يوجد إنترنت الآن. هذه آخر أسعار محفوظة، جُلبت '+fxAgo(fx.t)+' ('+fxTime(fx.t)+'). شغّل الإنترنت واضغط «تحديث» لتحصل على الأسعار الجديدة.';c.append(w)}
+    rb.append(c)
+  }
+  const rf=document.createElement('button');rf.textContent='تحديث';rf.style.cssText='font-size:14px;padding:7px 12px;width:auto';rf.onclick=()=>load(true);
+  b.parentNode.querySelector('.ovh').append(rf);
+  async function load(force){
+    busy=true;fail=false;render();
+    const r=await getFx(force);
+    busy=false;
+    if(r){fx=r;if(!list().some(c=>c[0]===from))from='SAR';if(!list().some(c=>c[0]===to))to='USD'}else fail=!fx;
+    render()
+  }
+  const note=document.createElement('div');note.className='fxn';
+  note.append('أسعار مرجعية تُحدَّث مرة في اليوم، وقد تختلف عن أسعار البنوك ومحلات الصرافة. المصدر: ');
+  const a=document.createElement('a');a.href='https://www.exchangerate-api.com';a.target='_blank';a.rel='noopener';a.textContent='ExchangeRate-API';note.append(a,' (وبديله Currency-API).');
+  const fw=document.createElement('div');fw.className='fxw';fw.append(fb,tb,swap);
+  inp.placeholder='المبلغ';b.append(inp,fw,rb,note);
+  render();load(false)
 }
 function infoText(title,name,rows){
   const o=[title];if(name)o.push('الاسم: '+name);o.push('');
