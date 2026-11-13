@@ -3,7 +3,12 @@ name: Build APK
 on:
   push:
     branches: [main, master]
+    paths-ignore:
+      - '**.md'
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -23,8 +28,21 @@ jobs:
       - name: Build debug APK
         run: gradle assembleDebug --no-daemon --stacktrace
 
+      - name: Collect APK
+        run: cp app/build/outputs/apk/debug/app-debug.apk app-debug.apk
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: calculator-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: app-debug.apk
+
+      - name: Publish release (latest)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest --yes --cleanup-tag || true
+          gh release create latest app-debug.apk \
+            --title "Calculator build ${{ github.run_number }}" \
+            --notes "Download app-debug.apk and install it over the old version." \
+            --latest
