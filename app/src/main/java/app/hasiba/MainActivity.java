@@ -34,11 +34,14 @@ import java.util.ArrayList;
 public class MainActivity extends Activity {
 
     private static final int REQ_FILE = 1;
-    private static final String HOME = "https://appassets.androidplatform.net/assets/index.html";
+    private static final String HOME = "https://appassets.androidplatform.net/assets/calc.html";
 
     private WebView web;
     private ValueCallback<Uri[]> filePathCallback;
     private Uri cameraUri;
+    private android.speech.SpeechRecognizer sr;
+    private String pendingLang = "ar-SA";
+    private static final int REQ_AUDIO = 18;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +126,100 @@ public class MainActivity extends Activity {
         }
     }
 
+    void jsCall(final String js) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (web != null) web.evaluateJavascript(js, null);
+            }
+        });
+    }
+
+    /** الإملاء الصوتي بمحرك التعرف على الكلام في أندرويد. */
+    void startListen(String lang) {
+        pendingLang = (lang == null || lang.isEmpty()) ? "ar-SA" : lang;
+        if (Build.VERSION.SDK_INT >= 23
+                && checkSelfPermission(android.Manifest.permission.RECORD_AUDIO) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{android.Manifest.permission.RECORD_AUDIO}, REQ_AUDIO);
+            return;
+        }
+        if (!android.speech.SpeechRecognizer.isRecognitionAvailable(this)) {
+            jsCall("window.__spErr&&window.__spErr('unavailable')");
+            return;
+        }
+        stopListen();
+        sr = android.speech.SpeechRecognizer.createSpeechRecognizer(this);
+        sr.setRecognitionListener(new android.speech.RecognitionListener() {
+            @Override public void onReadyForSpeech(Bundle p) { }
+            @Override public void onBeginningOfSpeech() { }
+            @Override public void onRmsChanged(float v) { }
+            @Override public void onBufferReceived(byte[] b) { }
+            @Override public void onEndOfSpeech() { }
+            @Override public void onEvent(int t, Bundle b) { }
+
+            @Override
+            public void onPartialResults(Bundle b) {
+                ArrayList<String> l = b.getStringArrayList(android.speech.SpeechRecognizer.RESULTS_RECOGNITION);
+                if (l != null && !l.isEmpty()) {
+                    jsCall("window.__spRes&&window.__spRes(" + org.json.JSONObject.quote(l.get(0)) + ",false)");
+                }
+            }
+
+            @Override
+            public void onResults(Bundle b) {
+                ArrayList<String> l = b.getStringArrayList(android.speech.SpeechRecognizer.RESULTS_RECOGNITION);
+                if (l != null && !l.isEmpty()) {
+                    jsCall("window.__spRes&&window.__spRes(" + org.json.JSONObject.quote(l.get(0)) + ",true)");
+                }
+                jsCall("window.__spEnd&&window.__spEnd()");
+            }
+
+            @Override
+            public void onError(int code) {
+                if (code == android.speech.SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS) {
+                    jsCall("window.__spErr&&window.__spErr('not-allowed')");
+                } else {
+                    jsCall("window.__spEnd&&window.__spEnd()");
+                }
+            }
+        });
+        Intent i = new Intent(android.speech.RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        i.putExtra(android.speech.RecognizerIntent.EXTRA_LANGUAGE_MODEL, android.speech.RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        i.putExtra(android.speech.RecognizerIntent.EXTRA_LANGUAGE, pendingLang);
+        i.putExtra(android.speech.RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
+        i.putExtra(android.speech.RecognizerIntent.EXTRA_MAX_RESULTS, 1);
+        sr.startListening(i);
+    }
+
+    void stopListen() {
+        if (sr != null) {
+            try {
+                sr.cancel();
+                sr.destroy();
+            } catch (Exception ignored) {
+            }
+            sr = null;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int code, String[] perms, int[] results) {
+        super.onRequestPermissionsResult(code, perms, results);
+        if (code == REQ_AUDIO) {
+            if (results.length > 0 && results[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                startListen(pendingLang);
+            } else {
+                jsCall("window.__spErr&&window.__spErr('not-allowed')");
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        stopListen();
+        super.onDestroy();
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -166,6 +263,26 @@ public class MainActivity extends Activity {
 
     /** Functions the web page can call as window.Android.* */
     private class Bridge {
+
+        @JavascriptInterface
+        public void startListening(final String lang) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    startListen(lang);
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void stopListening() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    stopListen();
+                }
+            });
+        }
 
         @JavascriptInterface
         public boolean has() {
@@ -218,7 +335,7 @@ public class MainActivity extends Activity {
                             v.put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME, safe);
                             v.put(android.provider.MediaStore.MediaColumns.MIME_TYPE, mime);
                             v.put(android.provider.MediaStore.MediaColumns.RELATIVE_PATH,
-                                    Environment.DIRECTORY_PICTURES + "/Adwiyati");
+                                    Environment.DIRECTORY_PICTURES + "/Calculator");
                             Uri uri = getContentResolver().insert(
                                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, v);
                             OutputStream o = getContentResolver().openOutputStream(uri);
@@ -226,7 +343,7 @@ public class MainActivity extends Activity {
                             o.close();
                         } else {
                             File dir = new File(Environment.getExternalStoragePublicDirectory(
-                                    Environment.DIRECTORY_PICTURES), "Adwiyati");
+                                    Environment.DIRECTORY_PICTURES), "Calculator");
                             dir.mkdirs();
                             File f = new File(dir, safe);
                             FileOutputStream o = new FileOutputStream(f);
@@ -235,7 +352,7 @@ public class MainActivity extends Activity {
                             MediaScannerConnection.scanFile(MainActivity.this,
                                     new String[]{f.getAbsolutePath()}, new String[]{mime}, null);
                         }
-                        Toast.makeText(MainActivity.this, "تم حفظ الصورة في المعرض (Adwiyati)", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "تم حفظ الصورة في المعرض (Calculator)", Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Toast.makeText(MainActivity.this, "تعذر حفظ الصورة", Toast.LENGTH_LONG).show();
                     }
